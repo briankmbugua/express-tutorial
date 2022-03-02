@@ -17,6 +17,7 @@ app.get('/api/people',(req,res)=>{
 })
 
 app.post('/api/people',(req,res)=>{
+
     res.status(201).send('Succes')
 })
 
