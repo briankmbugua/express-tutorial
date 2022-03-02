@@ -1,23 +1,37 @@
 const express = require('express')
 const app = express()
-const logger = require('./logger')
-const authorize = require('./authorize')
-// req => middleware => res seats in bewtween
-app.use([logger,authorize]) //this is how you execute multiple
-//middleware functions,order also matters here
+let {people} = require('./data')
 
-app.get('/',(req,res)=>{
-res.send('Home')
+//static assests
+
+
+app.use(express.static('./methods-public'))
+//parse form data
+app.use(express.urlencoded({extended: false}))
+//parse json
+app.use(express.json())
+
+
+app.get('/api/people',(req,res)=>{
+    res.status(200).json({succes:true,data:people})
 })
-app.get('/about',(req,res)=>{
-    res.send('About')
+
+app.post('/api/people',(req,res)=>{
+    res.status(201).send('Succes')
 })
-app.get('/api/products',(req,res)=>{
-    res.send('products')
+
+app.post('/login',(req,res)=>{
+    console.log(req.body);
+    const {name} = req.body;
+    if(name) {
+        return res.status(200).send(`Welcome ${name}`)
+    }
+
+    res.status(401).send('please provide credentials')
 })
-app.get('/api/items',(req,res)=>{
-    res.send('Items')
-})
+
+
+
 app.listen(5000, () => {
   console.log('Server is listening on port 5000....')
 })

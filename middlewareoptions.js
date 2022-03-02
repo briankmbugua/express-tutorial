@@ -1,12 +1,7 @@
 const express = require('express')
 const app = express()
-const logger = require('./logger')
-// req => middleware => res seats in bewtween
-// app.use(logger)//this will apply to all routes
-app.use('/api',logger)//this will apply to routes beginning
-//with api
-//if you ommit the path the logger middleware will be applied to all
-//the routes
+const morgan = require('morgan')
+app.use(morgan('tiny'));
 
 app.get('/',(req,res)=>{
 res.send('Home')
@@ -18,6 +13,7 @@ app.get('/api/products',(req,res)=>{
     res.send('products')
 })
 app.get('/api/items',(req,res)=>{
+    console.log(req.user)
     res.send('Items')
 })
 app.listen(5000, () => {
